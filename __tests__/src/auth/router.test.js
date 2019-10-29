@@ -27,30 +27,23 @@ describe('Auth Router', () => {
       let encodedToken;
       let id;
       
-      it('can create one', () => {
-        return mockRequest.post('/signup')
-          .send(users[userType])
-          .then(results => {
-            var token = jwt.verify(results.text, process.env.SECRET || 'changeit');
-            id = token.id;
-            encodedToken = results.text;
-            expect(token.id).toBeDefined();
-            expect(token.capabilities).toBeDefined();
-          });
+      it('can create one', async () => {
+        const results = await mockRequest.post('/signup')
+          .send(users[userType]);
+        var token = jwt.verify(results.text, process.env.SECRET || 'changeit');
+        id = token.id;
+        encodedToken = results.text;
+        expect(token.id).toBeDefined();
+        expect(token.capabilities).toBeDefined();
       });
 
-      it('can signin with basic', () => {
-        return mockRequest.post('/signin')
-          .auth(users[userType].username, users[userType].password)
-          .then(results => {
-            var token = jwt.verify(results.text, process.env.SECRET || 'changeit');
-            expect(token.id).toEqual(id);
-            expect(token.capabilities).toBeDefined();
-          });
+      it('can signin with basic', async () => {
+        const results = await mockRequest.post('/signin')
+          .auth(users[userType].username, users[userType].password);
+        var token = jwt.verify(results.text, process.env.SECRET || 'changeit');
+        expect(token.id).toEqual(id);
+        expect(token.capabilities).toBeDefined();
       });
-
     });
-    
   });
-  
 });
