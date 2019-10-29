@@ -26,8 +26,8 @@ describe('Auth Router', () => {
       let encodedToken;
       let id;
       
-      it('can create one', async () => {
-        const results = await mockRequest.post('/signup')
+      it('can create one', () => {
+        const results = mockRequest.post('/signup')
           .send(users[userType]);
         var token = jwt.verify(results.text, process.env.SECRET || 'changeit');
         id = token.id;
@@ -36,8 +36,8 @@ describe('Auth Router', () => {
         expect(token.capabilities).toBeDefined();
       });
 
-      it('can signin with basic', async () => {
-        const results = await mockRequest.post('/signin')
+      it('can signin with basic', () => {
+        const results = mockRequest.post('/signin')
           .auth(users[userType].username, users[userType].password);
         var token = jwt.verify(results.text, process.env.SECRET || 'changeit');
         expect(token.id).toEqual(id);

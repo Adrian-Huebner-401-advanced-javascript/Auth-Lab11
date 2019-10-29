@@ -22,14 +22,14 @@ users.pre('save', async function() {
 users.statics.authenticateBasic = function(auth) {
   let query = {username:auth.username};
   return this.findOne(query)
-    .then(user => user && user.comparePassword(auth.password))
+    .then(user => user.comparePassword(auth.password))
     .catch(console.error);
 };
 
 // Compare a plain text password against the hashed one we have saved
 users.methods.comparePassword = function(password) {
   return bcrypt.compare(password, this.password)
-  .then(isValid=>isValid ? this: null);
+  .then(isValid => isValid ? this: null);
 };
 
 // Generate a JWT from the user id and a secret
